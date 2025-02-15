@@ -65,20 +65,36 @@ void drawWindowFrame() {
     u8g2.setDrawColor(1);
 }
 
+unsigned long lastBlinkTime = 0;
+bool underlineVisible = true;
+
 void drawMenu() {
     u8g2.clearBuffer();
     drawWindowFrame();
     
     int startY = 14;
     for(int i = 0; i < MAX_MENU_ITEMS; i++) {
-        int yPos = startY + (i * 10);
+        int yPos = startY + (i * 10);  // Adjusted for proper item spacing
         
         if(i == currentMenuItem) {
+            // Draw selected item (highlighted with '>') with an underline
             u8g2.setFont(u8g2_font_4x6_tf);
-            u8g2.drawStr(4, yPos, ">");
-            u8g2.setFont(u8g2_font_6x10_tf);
-            u8g2.drawStr(12, yPos, menuItems[i]);
+            u8g2.drawStr(4, yPos, ">"); // Cursor
+            
+            u8g2.setFont(u8g2_font_6x10_tf); // Item text font
+            u8g2.drawStr(12, yPos, menuItems[i]); // Menu item text
+            
+            // Blink the underline
+            if (millis() - lastBlinkTime > 500) {  // Toggle every 500ms (adjustable)
+                lastBlinkTime = millis();
+                underlineVisible = !underlineVisible; // Toggle underline visibility
+            }
+            
+            if (underlineVisible) {
+                u8g2.drawStr(12, yPos + 1, "_"); // Underline (adjusted Y position)
+            }
         } else {
+            // Draw unselected items
             u8g2.setFont(u8g2_font_6x10_tf);
             u8g2.drawStr(12, yPos, menuItems[i]);
         }
@@ -86,6 +102,7 @@ void drawMenu() {
     
     u8g2.sendBuffer();
 }
+
 
 void displayMessage(const char* line1, const char* line2 = nullptr, const char* line3 = nullptr, int duration = 1500) {
     u8g2.clearBuffer();
@@ -283,7 +300,7 @@ void irspam() {
         delay(50);
     }
     
-    int totalCodes = 35;
+    int totalCodes = 50;
     int currentCode = 0;
     int currentAngle = 0;
     
