@@ -1,14 +1,14 @@
 #include <U8g2lib.h>
 #include <IRremote.h>
 #include <Wire.h>
-
+//Test comment to test comenttns\
 // Initialize U8G2 display
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
 // Button definitions
 #define BTN_LEFT D1
 #define BTN_RIGHT D8
-#define BTN_UP D9
+#define BTN_UP  
 #define BTN_SELECT D10
 #define BTN_BACK D6
 #define BTN_DOWN D8
